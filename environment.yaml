@@ -1,0 +1,16 @@
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - ipywidgets
+  - numpy
+  - pandas
+  - pytorch
+  - torchvision
+  - tqdm
+  - tensorflow
+  - fenics
+  - jupyterlab
+  - pip
+  - pip:
+      # Any additional pip packages can be added here

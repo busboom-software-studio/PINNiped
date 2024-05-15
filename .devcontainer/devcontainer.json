@@ -1,16 +1,26 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "image": "mcr.microsoft.com/devcontainers/miniconda:0-3",
   "hostRequirements": {
     "cpus": 4
   },
   "waitFor": "onCreateCommand",
-  "updateContentCommand": "python3 -m pip install -r requirements.txt",
-  "postCreateCommand": "",
+  "updateContentCommand": "conda env update --name base --file environment.yaml",
+  "postCreateCommand": "jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --NotebookApp.token='' --NotebookApp.password=''",
   "customizations": {
     "codespaces": {
-      "openFiles": []
+      "openFiles": [],
+      "portsAttributes": {
+        "8888": {
+          "label": "JupyterLab",
+          "onAutoForward": "notify"
+        }
+      }
     },
     "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/conda/bin/python",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
       "extensions": [
         "ms-toolsai.jupyter",
         "ms-python.python"
