@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ipywidgets = "*"
+matplotlib = "*"
+numpy = "*"
+pandas = "*"
+torch = "*"
+torchvision = "*"
+tqdm = "*"
+tensorflow = "*"
+fenics = "*"
+seaborn = "*"
+plotly = "*"
+scikit-learn = "*"
+scipy = "*"
+keras = "*"
+jupyterlab = "*"
+jupyter-ai = "*"
+jupyter-ai-magics = "*"
+langchain-openai = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
