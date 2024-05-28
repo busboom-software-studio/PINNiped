@@ -5,6 +5,9 @@ This project will explore using Neural Networks to solve systems of partial diff
 
 ## Note 
 
+
+A good [introduction to PINNs](https://medium.com/@theo.wolf/physics-informed-neural-networks-a-simple-tutorial-with-pytorch-f28a890b874a)
+
 Videos: 
 * Overview of PINNS:  https://www.youtube.com/watch?v=qYmkUXH7TCY
 * Solving NS with as PINN, with code: https://www.youtube.com/watch?v=ISp-hq6AH3Q
