@@ -7,7 +7,7 @@ accurately model balistics with a complex projectile, specifically the [note](
 https://www.andymark.com/products/frc-2024-am-4999) 
 used in the [2024 FIRST Robotics game, CRESCENDO. ](https://firstfrc.blob.core.windows.net/frc2024/Manual/2024GameManual.pdf)
 
-The interesting problem in the CRESCENDO game is that the projectile,[a foam
+The interesting problem in the CRESCENDO game is that the projectile, [a foam
 donut called a 'note'](https://www.andymark.com/products/frc-2024-am-4999) is
 often launched with spin to increase sability. But this gyroscopic stability
 will also mean that the angle of the velocity vector relative to the
