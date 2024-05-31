@@ -43,7 +43,17 @@ predicted through other machine learning techniques.
 Start with this [basic introduction to neural networks](https://www.knime.com/blog/a-friendly-introduction-to-deep-neural-networks)
 
 
+Be familiar with the [ballistics equations and how to solve them in python](https://blog.finxter.com/5-best-ways-to-model-projectile-motion-using-python/). See also this more 
+[sophisticated solution using scipy. ](https://scipython.com/book2/chapter-8-scipy/examples/a-projectile-with-air-resistance/)
+
+
+This video illustrates how a NN can be a [universal approximator of continuous functions. ](https://x.com/Hamptonism/status/1796111788292866468). The gist of the video is that for each connection, the weight of the connection is setting the slope of the RELU activation function, and the bias is shifting it. 
+
+
 ## Notes
+
+[NeuroDiffEq](https://github.com/NeuroDiffGym/neurodiffeq) A Python package for solving differential equations with neural networks.
+
 
 
 A good [introduction to PINNs](https://medium.com/@theo.wolf/physics-informed-neural-networks-a-simple-tutorial-with-pytorch-f28a890b874a)
