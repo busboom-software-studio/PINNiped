@@ -47,7 +47,7 @@ Be familiar with the [ballistics equations and how to solve them in python](http
 [sophisticated solution using scipy. ](https://scipython.com/book2/chapter-8-scipy/examples/a-projectile-with-air-resistance/)
 
 
-This video illustrates how a NN can be a [universal approximator of continuous functions. ](https://x.com/Hamptonism/status/1796111788292866468). The gist of the video is that for each connection, the weight of the connection is setting the slope of the RELU activation function, and the bias is shifting it. 
+This video illustrates how a NN can be a [universal approximator of continuous functions. ](https://x.com/Hamptonism/status/1796111788292866468). The gist of the video is that for each connection, the weight of the connection is setting the slope of the RELU activation function, and the bias is shifting it. This [wikipedia article](https://en.wikipedia.org/wiki/Universal_approximation_theorem) may also be helpful. 
 
 
 ## Notes
