@@ -12,6 +12,7 @@ scipy
 
 
 tensorflow
+tensorflow_datasets
 keras
 torch
 torchvision
