@@ -1,0 +1,3 @@
+[submodule "notebooks/examples/TheodoreWolf_pinns"]
+	path = notebooks/examples/TheodoreWolf_pinns
+	url = https://github.com/TheodoreWolf/pinns
