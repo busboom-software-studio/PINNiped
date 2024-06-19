@@ -56,7 +56,8 @@ This video illustrates how a NN can be a [universal approximator of continuous f
 
 
 
-A good [introduction to PINNs](https://medium.com/@theo.wolf/physics-informed-neural-networks-a-simple-tutorial-with-pytorch-f28a890b874a)
+A good [introduction to PINNs](https://medium.com/@theo.wolf/physics-informed-neural-networks-a-simple-tutorial-with-pytorch-f28a890b874a). And this article
+[actually covers a ballistic simulation](https://towardsdatascience.com/physics-informed-neural-networks-pinns-an-intuitive-guide-fff138069563)
 
 Videos: 
 * Overview of PINNS:  https://www.youtube.com/watch?v=qYmkUXH7TCY
