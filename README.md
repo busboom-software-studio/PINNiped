@@ -26,7 +26,7 @@ We will begin by studying:
 * Basic dense neural networks
 * Basic machine vision processing
 
-Once students are comforrtable with the basics, we will move on to:
+Once students are comfortable with the basics, we will move on to:
 
 * Modeling systems with Recurrent and LSTM neural networks
 * Developiong a physics informed neural network. 

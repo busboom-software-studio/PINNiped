@@ -18,7 +18,9 @@ torch
 torchvision
 
 jupyterlab
-
 jupyter-ai
 jupyter_ai_magics
 langchain-openai
+
+pytube
+opencv-python
