@@ -5,9 +5,7 @@
   },
   "waitFor": "onCreateCommand",
   "postCreateCommand": [
-    "apt-get update",
-    "apt-get install -y libgl1-mesa-glx libglib2.0-0",
-    "pip install -r requirements.txt"
+    "sudo apt-get update && sudo apt-get install -y libgl1-mesa-glx libglib2.0-0 && sudo pip install -r requirements.txt"
   ],
   "customizations": {
     "codespaces": {
