@@ -5,3 +5,4 @@ notebooks/cifar_net.pth
 .venv
 venv
 
+.DS_Store
