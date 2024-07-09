@@ -31,16 +31,22 @@ def plot_traj(df):
 
 # Constants
 
+from dataclasses import dataclass
 
-g = 9.81  # Gravitational acceleration (m/s^2)
-dt = 0.01  # Time step (s)
+@dataclass
+class Constants:
+    drag_f: callable
+    g: float = 9.81       # Gravitational acceleration (m/s^2)
+    dt: float = 0.01      # Time step (s)
+    C_d: float = 0.047    # Drag coefficient
+    rho: float = 1.225    # Air density (kg/m^3)
+    A: float = 0.045      # Cross-sectional area (m^2)
+    m: float = 0.145      # Mass (kg)
+    
 
-C_d = 0.047  # Drag coefficient
-rho = 1.225  # Air density (kg/m^3)
-A = 0.045  # Cross-sectional area (m^2)
 
 # Event function to stop integration when y < 0
-def event_y_below_zero(t, state,m , drag_f):
+def event_y_below_zero(t, state, consts: Constants ):
     return state[1]  # state[1] is y, so looking for y == 0
 
 event_y_below_zero.terminal = True
@@ -50,12 +56,12 @@ event_y_below_zero.direction = -1 # When y == 0, look for transition from pos to
 def drag(t, vx, vy):
     """Compute the drag force"""
     v = np.sqrt(vx**2 + vy**2) # Magnitude of velocity vector
-    F_d = 0.5 * C_d * rho * A * v**2
+    F_d = 0.5 * consts.C_d * consts.rho * consts.A * v**2
     
     return F_d
 
 
-def _projectile_motion( t, state, m, drag_f):
+def _projectile_motion( t, state, consts: Constants):
     """Calculate dy/dt for the state y. This version includes all state
     values, and the input is the same structure as the output. """
     
@@ -64,30 +70,27 @@ def _projectile_motion( t, state, m, drag_f):
     v = np.sqrt(vx**2 + vy**2) # Magnitude of velocity vector
     a =  math.atan2(vy, vx)
     
-    F_d = drag_f(t, vx, vy)
+    F_d = consts.drag_f(t, vx, vy)
+    
+    ax = -F_d * math.cos(a) /consts.m 
 
-    # v_x/v is the cos of the angle of the velocity vector
-    # so this is -F_d*cos(v)
-    ax = -F_d * vx / (m * v)
-
-    #v_y/v is the sin of the angle of the velocity vector
-    ay = -g - (F_d * vy / (m * v))
+    ay = -consts.g - (F_d * math.sin(a) / consts.m )
     
     return (ax, ay, vx, vy, ax, ay )
 
-def projectile_motion( t, yn, m, drag_f):
-    """Calculate dy/dt for the state y"""
+def projectile_motion( t, yn, consts: Constants ):
+    """adapt _projectile_motion"""
     
-    print(t, end=' ')
+   
   
     if len(yn) < 6:
         yn = np.append(yn, np.array([0,0]))
     
-    yn1 = _projectile_motion(t, yn, m, drag_f)
+    yn1 = _projectile_motion(t, yn, consts)
     
     return yn1[2:]
 
-def throw(v0, m, angle, drag_f):
+def throw(v0, angle, consts: Constants):
     """Solve a trajectory for an initial velocity and angle"""
     
     angle_rad = np.radians(angle)
@@ -102,12 +105,12 @@ def throw(v0, m, angle, drag_f):
     # Time span
     t_max = 20
     t_span = (0, t_max)  
-    t_eval = np.arange(0, t_max, dt)
+    t_eval = np.arange(0, t_max, consts.dt)
 
     solution = solve_ivp(projectile_motion, t_span, 
                          y0 =  [x0, y0, vx0, vy0], # Initial State
                          t_eval=t_eval, 
-                         args = (m, drag_f), events=event_y_below_zero)
+                         args = (consts,), events=event_y_below_zero)
 
     t = solution.t
     x, y, vx, vy = solution.y # Unpack the states
@@ -119,11 +122,11 @@ def throw(v0, m, angle, drag_f):
 
     # drag_v = np.vectorize(drag)
     
-    F_d = drag_f(t, vx, vy)
+    F_d = consts.drag_f(t, vx, vy)
     
     v = np.sqrt(vx**2 + vy**2)
-    ax = -F_d * vx / (m * v)
-    ay = -g - (F_d * vy / (m * v))
+    ax = -F_d * vx / (consts.m * v)
+    ay = -consts.g - (F_d * vy / (consts.m * v))
     
     # Create a pandas DataFrame
     
@@ -140,6 +143,10 @@ def throw(v0, m, angle, drag_f):
     
     return pd.DataFrame(data)
 
-df = throw(v0=200, m = 0.145, angle=55, drag_f=drag)
+# Example of how to use the dataclass
+consts = Constants(drag_f=drag)
+
+
+df = throw(v0=200, angle=55, consts=consts)
 plot_traj(df)
 
