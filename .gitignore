@@ -6,3 +6,4 @@ notebooks/cifar_net.pth
 venv
 
 .DS_Store
+.idea
