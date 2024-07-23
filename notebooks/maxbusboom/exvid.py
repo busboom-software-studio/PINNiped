@@ -10,6 +10,7 @@ import matplotlib.pylab as plt
 import matplotlib.animation as animation
 from IPython.display import HTML
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
+
 def show_frame(frame):
     """Display a frame in the notebook"""
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -18,6 +19,7 @@ def show_frame(frame):
     plt.imshow(frame_rgb)
     plt.axis('off')  # Turn off axis numbers and ticks
     plt.show()
+
 def extract_traj(fp, centroid_func=None, ex_frame=.5):
     """Run extraction function and generate dataframe, for each frame in the movie"""
     # Open the video file
