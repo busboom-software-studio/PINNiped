@@ -2,6 +2,7 @@
 
 import cv2
 import sys
+from pathlib import Path 
 
 def display_middle_frame(video_path):
     # Open the video file
@@ -28,7 +29,10 @@ def display_middle_frame(video_path):
         sys.exit()
 
     # Display the middle frame
-    cv2.imshow("Middle Frame", frame)
+    window_name = "Middle Frame"
+    
+    cv2.imshow(window_name, frame)
+    cv2.moveWindow(window_name, 0, 0)
 
     # Wait for a key press and close the window
     cv2.waitKey(0)
@@ -39,8 +43,7 @@ def display_middle_frame(video_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python script.py <video_path>")
-        sys.exit()
-
-    video_path = sys.argv[1]
+        video_path = Path(__file__).parent.parent.parent / 'video' / 'canon.mp4'
+    else: 
+        video_path = sys.argv[1]
     display_middle_frame(video_path)

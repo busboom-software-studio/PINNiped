@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 from pathlib import Path
 import os
@@ -6,10 +8,11 @@ import cv2
 import pandas as pd
 import numpy as np
 import matplotlib.pylab as plt
+import time 
 
 import matplotlib.animation as animation
 from IPython.display import HTML
-os.environ["QT_QPA_PLATFORM"] = "offscreen"
+
 
 def show_frame(frame):
     """Display a frame in the notebook"""
@@ -138,8 +141,9 @@ def process_video(video_file, output_file):
             break
 
         print("Displaying frame...")
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        cv2.imshow('frame', gray)
+        f = find_cannonball_centroid_color(frame)[1]
+        cv2.imshow('frame', f)
+        time.sleep(.1)
 
         if cv2.waitKey(1) == ord('q'):
             break
