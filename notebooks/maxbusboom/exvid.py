@@ -76,7 +76,7 @@ def find_circles_in_mask(mask, original_image):
                 cv2.rectangle(output_image, (cx - 5, cy - 5), (cx + 5, cy + 5), (0, 128, 255), -1)
     
     return all_circles, output_image
-def calc_background(frames, num_frames=30):
+def calc_background(frames):
     
     new_frames = []
 
