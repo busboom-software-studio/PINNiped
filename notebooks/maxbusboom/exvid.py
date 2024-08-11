@@ -76,47 +76,37 @@ def find_circles_in_mask(mask, original_image):
                 cv2.rectangle(output_image, (cx - 5, cy - 5), (cx + 5, cy + 5), (0, 128, 255), -1)
     
     return all_circles, output_image
-def calc_background(video_path, num_frames=30):
+def calc_background(frames, num_frames=30):
     cap = cv2.VideoCapture(video_path)
-    frames = []
+    new_frames = []
 
-    for _ in range(num_frames):
-        ret, frame = cap.read()
-        if not ret:
-            break
+    for frame in frames:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        frames.append(gray)
+        new_frames.append(gray)
 
     cap.release()
     median_frame = np.mean(frames, axis=0).astype(dtype=np.uint8)
     return median_frame
     
-def sub_bg(video_path):
-    background = calc_background(video_path)
+def sub_bg(frames):
+    background = calc_background(frames)
     
-    cap = cv2.VideoCapture(video_path)
+    
     subtracted_frames = []
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+    for frame in frames:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         mask = cv2.absdiff(gray, background)
         _, mask = cv2.threshold(mask, 50, 255, cv2.THRESH_BINARY)
         subtracted_frames.append(mask)
 
-    cap.release()
     return subtracted_frames
 
-def mask_color(video_path, lower_color, upper_color):
-    cap = cv2.VideoCapture(video_path)
+def mask_color(frames, lower_color, upper_color):
+    
     masked_frames = []
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+    for frame in frames:
         
         # Convert the frame to HSV color space
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -141,9 +131,9 @@ def mask_color(video_path, lower_color, upper_color):
 lower_m = np.array([5, 100, 100])
 upper_m = np.array([15, 255, 255])
 
-c_frames = mask_color(vids[0], lower_m, upper_m)
+#c_frames = mask_color(vids[0], lower_m, upper_m)
 
-nbg_frames = sub_bg(vids[0])
+#nbg_frames = sub_bg(vids[0])
 
 def and_frames(list1, list2):
     # Check if both lists have the same number of frames
@@ -274,6 +264,7 @@ def yield_frame(video_file, release=True):
 
     cap = cv2.VideoCapture(video_file)
     rows = []
+    
     # Check if the video file opened successfully
     if not cap.isOpened():
         print(f"Error: Could not open video file {video_file}")
@@ -288,7 +279,7 @@ def yield_frame(video_file, release=True):
             print("Can't receive frame (stream end?). Exiting ...")
             break
         
-
+        
         yield frame
 
     if release==True:
@@ -297,7 +288,9 @@ def yield_frame(video_file, release=True):
 
 def process_video(video_file, output_file):
     
-    #print(f"Processing video file '{video_file}' and generating output '{output_file}'")
+    #Define the upper and lower bounds for red in the hsv color space
+    lower_bound = np.array([0,100,100])
+    upper_bound = np.array([0,100,25])
     frames = list(yield_frame(video_file,release=True))
     rows = []
     
