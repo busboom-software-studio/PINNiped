@@ -77,31 +77,53 @@ def find_circles_in_mask(mask, original_image):
     
     return all_circles, output_image
 def calc_background(frames, num_frames=30):
-    cap = cv2.VideoCapture(video_path)
+    
     new_frames = []
 
     for frame in frames:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         new_frames.append(gray)
 
-    cap.release()
+    
     median_frame = np.mean(frames, axis=0).astype(dtype=np.uint8)
     return median_frame
     
+# def sub_bg(frames):
+#     background = calc_background(frames)
+    
+#     subtracted_frames = []
+
+#     for frame in frames:
+#         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+#         print(f"type of background {background.shape}, type of gray {gray.shape}")
+#         mask = cv2.absdiff(gray, background)
+#         _, mask = cv2.threshold(mask, 50, 255, cv2.THRESH_BINARY)
+#         subtracted_frames.append(mask)
+
+#     return subtracted_frames
 def sub_bg(frames):
+    # Assuming calc_background returns a background image
     background = calc_background(frames)
     
+    # Ensure the background is grayscale
+    if len(background.shape) == 3 and background.shape[2] == 3:
+        background = cv2.cvtColor(cv2.cvtColor(background, cv2.COLOR_BGR2GRAY),cv2.COLOR_GRAY2BGR)
     
     subtracted_frames = []
 
     for frame in frames:
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY),cv2.COLOR_GRAY2BGR)
+        
+        # Resize background to match the frame size if needed
+        if gray.shape != background.shape:
+            background = cv2.resize(background, (gray.shape[1], gray.shape[0]))
+        
+        print(f"type of background {background.shape}, type of gray {gray.shape}")
+        
         mask = cv2.absdiff(gray, background)
         _, mask = cv2.threshold(mask, 50, 255, cv2.THRESH_BINARY)
         subtracted_frames.append(mask)
-
     return subtracted_frames
-
 def mask_color(frames, lower_color, upper_color):
     
     masked_frames = []
@@ -124,7 +146,6 @@ def mask_color(frames, lower_color, upper_color):
         # Append the binary masked frame to the list
         masked_frames.append(binary_masked_frame)
 
-    cap.release()
     return masked_frames
 
 # Define color range for the basketball (shades of orange)
@@ -143,6 +164,7 @@ def and_frames(list1, list2):
     anded_frames = []
     
     for frame1, frame2 in zip(list1, list2):
+        print("\n",f"shape of frame_1: {frame1.shape}, shape of frame_2: {frame2.shape}")
         # Perform bitwise AND operation
         anded_frame = cv2.bitwise_and(frame1, frame2)
         anded_frames.append(anded_frame)
@@ -294,7 +316,13 @@ def process_video(video_file, output_file):
     frames = list(yield_frame(video_file,release=True))
     rows = []
     
-    for frame in yield_frame(video_file):
+    #get all objects required for background subtraction
+    masked_frames = mask_color(frames, lower_bound,upper_bound)
+    sub_frames = sub_bg(frames)
+    anded_frames = and_frames(masked_frames,sub_frames)
+
+    
+    for frame in anded_frames:
         
         rows.append(extract_traj_per_frame(frame,find_cannonball_centroid_color))
         
